@@ -378,6 +378,8 @@ select.sel{border:1px solid var(--border-strong);background:var(--surface);color
 .rex-uptext{font-size:var(--ts-1);color:var(--text-muted);margin:0;line-height:1.45}
 .rex-upfoot{border-top:1px solid var(--border);padding:var(--s-3) var(--s-5);display:flex;align-items:center;gap:var(--s-3)}
 .rex-upfoot .btn-ghost{flex:1;justify-content:center}
+.rex-updates-teaser{padding:var(--s-5);display:flex;flex-direction:column;align-items:flex-start;gap:var(--s-4)}
+.rex-updates-teaser p{margin:0;font-size:var(--ts-2);color:var(--text-muted);line-height:1.5}
 
 .rex-caps{margin-top:var(--s-7);border-top:1px solid var(--border);padding-top:var(--s-5)}
 .rex-caps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--s-5)}
@@ -915,15 +917,18 @@ function rexHome(){
           <span class="pi">${RX_ICONS.flag}</span>
           <div><h3>What's new &amp; what's next</h3><p>Rex 360 product updates</p></div>
         </div>
-        <div class="rex-updates">${updates}</div>
-        <div class="rex-upfoot"><button class="btn-ghost" id="rex-follow">${RX_ICONS.bell}Follow updates</button></div>
+        <div class="rex-updates-teaser">
+          <p>See what shipped recently and what's coming next for Rex 360.</p>
+          <button class="btn-primary" id="rex-updates-open">${RX_ICONS.bell}View updates</button>
+        </div>
       </section>
     </div>
 
     <div class="rex-caps"><div class="rex-caps-grid">${caps}</div></div>
   </div>
   ${rxDrawerMarkup()}
-  ${rxChatMarkup()}`;
+  ${rxChatMarkup()}
+  ${rxUpdatesDrawerMarkup()}`;
 }
 const RX_ICONS={
  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg>',
@@ -1061,6 +1066,28 @@ function rxOpenDetail(id){
   d.classList.add('open');d.setAttribute('aria-hidden','false');$('#rx-scrim').classList.add('open');
 }
 function rxCloseDetail(){const d=$('#rx-drawer');if(!d)return;d.classList.remove('open','wide');d.setAttribute('aria-hidden','true');$('#rx-scrim').classList.remove('open');const x=$('#rx-expand');if(x)x.querySelector('.lbl').textContent='Expand';}
+function rxUpdatesDrawerMarkup(){
+  const updates=REX_UPDATES.map(u=>`
+      <div class="rex-up">
+        <span class="rex-uprail"><span class="rex-updot ${u.s}"></span><span class="rex-upline"></span></span>
+        <div class="rex-upbody"><span class="rex-uptag ${u.s}">${u.tag} · ${u.date}</span>
+          <p class="rex-uptitle">${u.t}</p><p class="rex-uptext">${u.d}</p></div>
+      </div>`).join('');
+  return `
+  <div class="rx-scrim" id="rx-updates-scrim"></div>
+  <aside class="rx-drawer" id="rx-updates-drawer" aria-hidden="true" aria-label="What's new and what's next">
+    <div class="rx-dhead">
+      <button class="rx-iconbtn" id="rx-updates-close" aria-label="Close updates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      <span class="rx-did">What's new &amp; what's next</span>
+    </div>
+    <div class="rx-dbody" style="display:flex;flex-direction:column;padding:0">
+      <div class="rex-updates">${updates}</div>
+      <div class="rex-upfoot"><button class="btn-ghost" id="rex-follow">${RX_ICONS.bell}Follow updates</button></div>
+    </div>
+  </aside>`;
+}
+function rxOpenUpdates(){const d=$('#rx-updates-drawer');if(!d)return;rxCloseChat();d.classList.add('open');d.setAttribute('aria-hidden','false');$('#rx-updates-scrim').classList.add('open');}
+function rxCloseUpdates(){const d=$('#rx-updates-drawer');if(!d)return;d.classList.remove('open');d.setAttribute('aria-hidden','true');$('#rx-updates-scrim').classList.remove('open');}
 function rxStep(delta){if(rxDetailIdx<0||!rxList.length)return;const n=(rxDetailIdx+delta+rxList.length)%rxList.length;rxOpenDetail(rxList[n].id);}
 function rxQual(s){if(s==null)return '';
   const lvl=rxScoreLvl(s),lbl=lvl==='high'?'High':lvl==='med'?'Medium':'Low';
@@ -1166,6 +1193,9 @@ SCREEN_INIT.rex360=()=>{
     $('#rex-seeall').addEventListener('click',()=>submit('added this month'));
     $('#rex-follow').addEventListener('click',()=>toast('You will be notified of Rex 360 updates'));
     $('#rex-chat-btn').addEventListener('click',()=>rxOpenChat(q.value));
+    $('#rex-updates-open').addEventListener('click',rxOpenUpdates);
+    $('#rx-updates-close').addEventListener('click',rxCloseUpdates);
+    $('#rx-updates-scrim').addEventListener('click',rxCloseUpdates);
   }else{
     const q=$('#rex-q2');
     q.addEventListener('keydown',e=>{if(e.key==='Enter')submit(q.value)});
@@ -1406,6 +1436,7 @@ $('#themeBtn').addEventListener('click',toggleTheme);
 $('#menuBtn').addEventListener('click',()=>$('#sidebar').classList.toggle('open'));
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){const d=document.getElementById('rx-drawer');if(d&&d.classList.contains('open')){rxCloseDetail();return;}}
+  if(e.key==='Escape'){const d=document.getElementById('rx-updates-drawer');if(d&&d.classList.contains('open')){rxCloseUpdates();return;}}
   if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){const s=$('#search');if(s){e.preventDefault();s.focus();}}
 });
 
