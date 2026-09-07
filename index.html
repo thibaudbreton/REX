@@ -326,8 +326,8 @@ select.sel{border:1px solid var(--border-strong);background:var(--surface);color
 .rex-ex .go svg{width:16px;height:16px}
 /* Home body — wider than the hero, uses the full content width */
 .rex-home-body{max-width:1180px;margin:0 auto}
-.rex-panels{display:grid;grid-template-columns:1.35fr 1fr;gap:var(--s-4);margin-top:var(--s-7);align-items:start}
-@media(max-width:900px){.rex-panels{grid-template-columns:1fr}}
+.rex-panels{display:grid;grid-template-columns:1fr;gap:var(--s-4);margin-top:var(--s-7);align-items:start}
+.rex-updates-cta{display:flex;justify-content:center;margin-top:var(--s-5)}
 .rex-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);box-shadow:var(--shadow);overflow:hidden;text-align:left}
 .rex-phead{display:flex;align-items:center;gap:var(--s-3);padding:var(--s-4) var(--s-5);border-bottom:1px solid var(--border)}
 .rex-phead .pi{width:32px;height:32px;border-radius:var(--r-sm);background:var(--green-100);color:var(--green-600);display:grid;place-items:center;flex:none}
@@ -378,8 +378,6 @@ select.sel{border:1px solid var(--border-strong);background:var(--surface);color
 .rex-uptext{font-size:var(--ts-1);color:var(--text-muted);margin:0;line-height:1.45}
 .rex-upfoot{border-top:1px solid var(--border);padding:var(--s-3) var(--s-5);display:flex;align-items:center;gap:var(--s-3)}
 .rex-upfoot .btn-ghost{flex:1;justify-content:center}
-.rex-updates-teaser{padding:var(--s-5);display:flex;flex-direction:column;align-items:flex-start;gap:var(--s-4)}
-.rex-updates-teaser p{margin:0;font-size:var(--ts-2);color:var(--text-muted);line-height:1.5}
 
 .rex-caps{margin-top:var(--s-7);border-top:1px solid var(--border);padding-top:var(--s-5)}
 .rex-caps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--s-5)}
@@ -852,8 +850,7 @@ SCREEN_INIT.chatbot=()=>{
 const REX_EXAMPLES=[
  {q:'Signalling test & commissioning best practices',meta:'Signalling · Best practice',ico:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>'},
  {q:'Incoming inspection not set up at project start',meta:'Systems · Issue',ico:'<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L14.4 3.9a2 2 0 0 0-3.4 0z"/>'},
- {q:'Fiber optic & copper transmission scheme before design',meta:'Systems · Best practice',ico:'<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.5 15.5M6 9v6"/>'},
- {q:'Safety retrofit after system baseline delivery',meta:'Urban · Cash impact',ico:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'}
+ {q:'Fiber optic & copper transmission scheme before design',meta:'Systems · Best practice',ico:'<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.5 15.5M6 9v6"/>'}
 ];
 const REX_CAPS=[
  {t:'Find similar REX',p:'Surface returns of experience close to your situation across the whole base.',ico:'<circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/>'},
@@ -913,6 +910,10 @@ function rexHome(){
     <p class="rex-label">Try an example</p>
     <div class="rex-examples">${examples}</div>
 
+    <div class="rex-updates-cta">
+      <button class="btn-ghost" id="rex-updates-open">${RX_ICONS.flag}What's new &amp; what's next</button>
+    </div>
+
     <div class="rex-panels">
       <section class="rex-panel">
         <div class="rex-phead">
@@ -926,17 +927,6 @@ function rexHome(){
           <div class="rex-stat"><b>3,178</b><span>Total in base</span></div>
         </div>
         <div class="rex-newlist">${newRows}</div>
-      </section>
-
-      <section class="rex-panel">
-        <div class="rex-phead">
-          <span class="pi">${RX_ICONS.flag}</span>
-          <div><h3>What's new &amp; what's next</h3><p>Rex 360 product updates</p></div>
-        </div>
-        <div class="rex-updates-teaser">
-          <p>See what shipped recently and what's coming next for Rex 360.</p>
-          <button class="btn-primary" id="rex-updates-open">${RX_ICONS.bell}View updates</button>
-        </div>
       </section>
     </div>
 
