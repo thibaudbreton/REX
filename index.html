@@ -559,12 +559,28 @@ select.sel{border:1px solid var(--border-strong);background:var(--surface);color
 .rx-dbody{padding:var(--s-5);overflow-y:auto;flex:1}
 .rx-dbadges{display:flex;gap:var(--s-2);flex-wrap:wrap;margin-bottom:var(--s-3)}
 .rx-dtitle{font-size:var(--ts-4);font-weight:700;line-height:1.32;margin:0 0 var(--s-5);color:var(--text);letter-spacing:-.01em}
-.rx-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s-4);padding:var(--s-4);background:var(--surface-2);border-radius:var(--r-md);margin-bottom:var(--s-5)}
-.rx-mi{display:flex;flex-direction:column;gap:2px}
-.rx-mi .k{font-size:var(--ts-1);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted)}
-.rx-mi .v{font-size:var(--ts-2);color:var(--text);font-weight:500}
-.rx-dsection{margin-bottom:var(--s-5)}
+.rx-dsection{margin-bottom:var(--s-6)}
 .rx-dtext{font-size:var(--ts-3);line-height:1.62;color:var(--text);margin:0}
+.rx-sechead{display:flex;align-items:center;gap:var(--s-3);margin:0 0 var(--s-4)}
+.rx-sechead span{font-size:var(--ts-1);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap}
+.rx-sechead::after{content:"";flex:1;height:1px;background:var(--border)}
+.rx-kv{margin:0}
+.rx-kv-row{display:grid;grid-template-columns:112px 1fr;gap:var(--s-4);padding:var(--s-2) 0}
+.rx-kv-row dt{font-size:var(--ts-2);font-weight:600;color:var(--text-muted);margin:0}
+.rx-kv-row dd{font-size:var(--ts-2);color:var(--text);margin:0;line-height:1.55}
+.rx-retenir{display:flex;flex-direction:column;gap:var(--s-3)}
+.rx-rcard{border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s-4);background:var(--surface-2)}
+.rx-rcard h4{margin:0 0 var(--s-1);font-size:var(--ts-2);font-weight:700;color:var(--text)}
+.rx-rcard p{margin:0;font-size:var(--ts-2);color:var(--text-muted);line-height:1.55}
+.rx-benefit{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-3);margin-top:var(--s-3)}
+.rx-bpill{border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s-3);text-align:center;background:var(--surface)}
+.rx-bpill .k{display:block;font-size:var(--ts-1);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px}
+.rx-bpill .v{display:block;font-size:var(--ts-3);font-weight:700;color:var(--text)}
+.rx-info{display:flex;flex-direction:column}
+.rx-info-row{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-4);padding:var(--s-3) 0;border-bottom:1px solid var(--border)}
+.rx-info-row:last-child{border-bottom:0}
+.rx-info-row .k{font-size:var(--ts-2);font-weight:600;color:var(--text-muted)}
+.rx-info-row .v{font-size:var(--ts-2);color:var(--text);text-align:right}
 
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy-900);color:#fff;padding:11px 18px;border-radius:var(--r-pill);font-size:var(--ts-2);font-weight:500;box-shadow:var(--shadow-lift);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:50;display:flex;align-items:center;gap:8px}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -991,8 +1007,30 @@ function rxCashBadge(r){return r.cash?`<span class="rx-badge cash">${RX_ICONS.co
 function rxFoot(id){return `<div class="rx-cfoot"><button class="rx-detail" data-detail="${id}">See details ${RX_ICONS.arrow}</button><div class="rx-footsp"></div><div class="rx-footdiv"></div><button class="rx-iconbtn" aria-label="Relevant">${RX_ICONS.up}</button><button class="rx-iconbtn" aria-label="Not relevant">${RX_ICONS.down}</button></div>`;}
 function rxCompact(r){return `<article class="rx-card" data-row="${r.id}"><div class="rx-chead"><div class="rx-idrow"><span class="rx-id">REX · ${r.id}</span>${rxCashBadge(r)}<div class="rx-footsp"></div>${rxQual(r.score)}</div><h4 class="rx-ctitle">${r.title}</h4></div><div class="rx-cbody"></div>${rxFoot(r.id)}</article>`;}
 function rxFull(r){const items=r.take.map(t=>`<li>${t}</li>`).join('');return `<article class="rx-card" data-row="${r.id}"><div class="rx-chead"><div class="rx-idrow"><span class="rx-id">REX · ${r.id}</span>${rxCashBadge(r)}<div class="rx-footsp"></div>${rxQual(r.score)}</div><h4 class="rx-ctitle">${r.title}</h4></div><div class="rx-cbody"><p class="rx-eyebrow">Takeaway</p><ul class="rx-take">${items}</ul></div>${rxFoot(r.id)}</article>`;}
-const RX_DESC='During integration testing, the hardware and software were validated directly on the target environment rather than on a bench simulator. Running Hardware-in-the-Loop (HwiL) tests early surfaced timing and interface issues that a pure software simulation would have missed, well before the commissioning phase. The practice was written up so other programs can plan HwiL slots from the start of their test campaign, with quality and integration teams involved up front.';
-const RX_META=[['Product line','028150 — Regional APM'],['Platform','APM / Urban'],['REX source','RexM'],['Macro process','Test & Commissioning'],['Last update','16 Apr 2026']];
+const RX_PROBLEM=[
+ ['What','Continue performing Hardware-in-the-Loop (HwiL) testing to verify hardware and software operate correctly in the target environment, as a best practice to replicate on other programs.'],
+ ['Why','To ensure HW and SW are working in the target environment.'],
+ ['When','31/07/2024'],
+ ['Who','Signalling program team — target environment testing.'],
+ ['How','By continuing HwiL testing in the target environment.'],
+ ['How much','No significant impact identified on quality, cost, or delivery. This is a success to repeat.']
+];
+const RX_CONTEXT='The REX is a positive best practice captured within a signalling program, emphasizing continued HwiL testing to validate HW/SW behavior in the target environment. Macro process and impacted solution are not available.';
+const RX_LESSON='Continue HwiL testing to ensure HW and SW work in the target environment; share this practice as a lesson learned for other programs.';
+const RX_CAPITALIZATION='Not capitalized at this stage.';
+const RX_BENEFIT={cost:'Neutral',delivery:'Neutral'};
+const RX_INFO=[
+ ['Product line/Business','Success story'],
+ ['Site submitter','3027 - Charleroi BE'],
+ ['Platform','D&IS Mainlines'],
+ ['Project Program Tender','CRL-DIS-REX-COM'],
+ ['Source','8D — QRQC'],
+ ['Macro process','Test & validation'],
+ ['Macro PBS','2.3.3 - On-board ATC…'],
+ ['REX Manager','ana-claudia.torre@alstomgroup.com'],
+ ['Expert','-'],
+ ['Capitalization Evidence','Activities forecast']
+];
 function rxChatMarkup(){return `
   <div class="rx-scrim" id="rx-chat-scrim"></div>
   <aside class="rx-drawer" id="rx-chat-drawer" aria-hidden="true" aria-label="Chat with the REX base">
@@ -1026,13 +1064,36 @@ function rxOpenChat(seed){
 }
 function rxCloseChat(){const d=$('#rx-chat-drawer');if(!d)return;d.classList.remove('open');d.setAttribute('aria-hidden','true');$('#rx-chat-scrim').classList.remove('open');}
 function rxDetailBody(r){
-  const meta=RX_META.map(([k,v])=>`<div class="rx-mi"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
-  const take=(r.take||RX_TAKE).map(t=>`<li>${t}</li>`).join('');
+  const problem=RX_PROBLEM.map(([k,v])=>`<div class="rx-kv-row"><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+  const info=RX_INFO.map(([k,v])=>`<div class="rx-info-row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
   return `<div class="rx-dbadges">${rxStatusPill(r.status||'stored')}${rxBadges(r)}${rxScore(r.score)}</div>
     <h2 class="rx-dtitle">${r.title}</h2>
-    <div class="rx-meta">${meta}</div>
-    <div class="rx-dsection"><p class="rx-eyebrow">Description · 5W2H</p><p class="rx-dtext">${RX_DESC}</p></div>
-    <div class="rx-dsection"><p class="rx-eyebrow">Takeaway</p><ul class="rx-take">${take}</ul></div>`;
+    <div class="rx-dsection">
+      <p class="rx-sechead"><span>Problem / Opportunity</span></p>
+      <dl class="rx-kv">${problem}</dl>
+    </div>
+    <div class="rx-dsection">
+      <p class="rx-sechead"><span>Context</span></p>
+      <p class="rx-dtext">${RX_CONTEXT}</p>
+    </div>
+    <div class="rx-dsection">
+      <p class="rx-sechead"><span>À retenir</span></p>
+      <div class="rx-retenir">
+        <div class="rx-rcard"><h4>Lesson learned</h4><p>${RX_LESSON}</p></div>
+        <div class="rx-rcard"><h4>Capitalization</h4><p>${RX_CAPITALIZATION}</p></div>
+        <div class="rx-rcard">
+          <h4>Benefit (Cost · Delivery)</h4>
+          <div class="rx-benefit">
+            <div class="rx-bpill"><span class="k">Cost</span><span class="v">${RX_BENEFIT.cost}</span></div>
+            <div class="rx-bpill"><span class="k">Delivery</span><span class="v">${RX_BENEFIT.delivery}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rx-dsection">
+      <p class="rx-sechead"><span>Information</span></p>
+      <div class="rx-info">${info}</div>
+    </div>`;
 }
 function rxDrawerMarkup(){return `
   <div class="rx-scrim" id="rx-scrim"></div>
