@@ -426,6 +426,11 @@ select.sel{border:1px solid var(--border-strong);background:var(--surface);color
 .rx-opt.sel .rx-box svg{opacity:1}
 .rx-opt .t{font-size:var(--ts-2);color:var(--text);line-height:1.35}
 .rx-optempty{font-size:var(--ts-2);color:var(--text-muted);margin:2px 0 0}
+.rx-daterange{display:flex;flex-direction:column;gap:var(--s-3)}
+.rx-dfield{display:flex;flex-direction:column;gap:4px}
+.rx-dfield span{font-size:var(--ts-1);font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted)}
+.rx-dfield input{padding:var(--s-2) var(--s-3);border:1px solid var(--border-strong);border-radius:var(--r-sm);font-size:var(--ts-2);color:var(--text);background:var(--surface);font-family:inherit;color-scheme:light dark}
+.rx-dfield input:focus{outline:none;border-color:var(--green-500);box-shadow:0 0 0 3px var(--green-100)}
 .rx-ffoot{padding:var(--s-3) var(--s-4) var(--s-4);border-top:1px solid var(--border)}
 .rx-ffoot .btn-ghost{width:100%;justify-content:center}
 .rx-main{flex:1;min-width:0}
@@ -456,24 +461,15 @@ select.sel{border:1px solid var(--border-strong);background:var(--surface);color
 /* REX card — same elevation/hover language as catalogue cards */
 .rx-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:transform .12s,box-shadow .12s,border-color .12s}
 .rx-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lift);border-color:var(--border-strong)}
-.rx-chead{background:var(--navy-900);color:#fff;padding:var(--s-3) var(--s-4)}
-:root[data-theme="dark"] .rx-chead{background:var(--surface-2)}
-.rx-idrow{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap;margin-bottom:var(--s-2)}
-.rx-id{font-family:var(--font-mono);font-size:var(--ts-1);font-weight:500;color:#aeb9cc;background:rgba(255,255,255,.08);padding:2px var(--s-2);border-radius:var(--r-xs);white-space:nowrap}
-/* Quality score — reliability signal, independent from identity colour */
-.rx-score{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:var(--ts-1);font-weight:500;padding:3px var(--s-2);border-radius:var(--r-pill);background:rgba(255,255,255,.10);color:#dbe4f2;line-height:1.3;white-space:nowrap;cursor:default}
-.rx-score .rx-sunit{opacity:.65}
-.rx-sdot{width:6px;height:6px;border-radius:50%;flex:none}
-.rx-score.high .rx-sdot{background:var(--ok)}
-.rx-score.med .rx-sdot{background:var(--cash)}
-.rx-score.low .rx-sdot{background:var(--issue)}
-.rx-dbadges .rx-score{background:var(--surface-2);color:var(--text-muted)}
+.rx-chead{background:var(--surface);color:var(--text);padding:var(--s-3) var(--s-4);border-bottom:1px solid var(--border)}
+.rx-idrow{display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-2)}
+.rx-id{font-family:var(--font-mono);font-size:var(--ts-1);font-weight:500;color:var(--text-muted);background:var(--surface-2);padding:2px var(--s-2);border-radius:var(--r-xs);white-space:nowrap}
+.rx-statusrow{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap;margin-bottom:var(--s-2)}
+.rx-statusrow .rx-spill{font-size:var(--ts-1);padding:3px var(--s-3)}
 .rx-badge{display:inline-flex;align-items:center;gap:5px;font-size:var(--ts-1);font-weight:600;padding:3px var(--s-2);border-radius:var(--r-pill);line-height:1.3}
 .rx-badge .dot{width:6px;height:6px;border-radius:50%}
-.rx-badge.success{background:var(--ok-bg);color:var(--ok)}.rx-badge.success .dot{background:var(--ok)}
-.rx-badge.issue{background:var(--issue-bg);color:var(--issue)}.rx-badge.issue .dot{background:var(--issue)}
 .rx-badge.cash{background:var(--cash-bg);color:var(--cash)}.rx-badge.cash svg{width:11px;height:11px}
-.rx-ctitle{font-size:var(--ts-3);font-weight:600;line-height:1.34;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.rx-ctitle{font-size:var(--ts-3);font-weight:600;line-height:1.34;margin:0;color:var(--text);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .rx-cbody{padding:var(--s-3) var(--s-4) 0;flex:1}
 .rx-eyebrow{font-size:var(--ts-1);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin:0 0 var(--s-2)}
 .rx-take{margin:0;padding-left:var(--s-4);font-size:var(--ts-2);color:var(--text-muted);line-height:1.5}
@@ -555,7 +551,8 @@ select.sel{border:1px solid var(--border-strong);background:var(--surface);color
 .rx-did{font-family:var(--font-mono);font-size:var(--ts-2);font-weight:500;color:var(--text-muted)}
 .rx-pos{font-family:var(--font-mono);font-size:var(--ts-1);color:var(--text-muted)}
 .rx-dbody{padding:var(--s-5);overflow-y:auto;flex:1}
-.rx-dbadges{display:flex;gap:var(--s-2);flex-wrap:wrap;margin-bottom:var(--s-3)}
+.rx-dtop{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);flex-wrap:wrap;margin-bottom:var(--s-3)}
+.rx-dtags{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}
 .rx-dtitle{font-size:var(--ts-4);font-weight:700;line-height:1.32;margin:0 0 var(--s-5);color:var(--text);letter-spacing:-.01em}
 .rx-dsection{margin-bottom:var(--s-6)}
 .rx-dtext{font-size:var(--ts-3);line-height:1.62;color:var(--text);margin:0}
@@ -960,7 +957,12 @@ const RX_SECTIONS=[
    {label:'028150 — Regional APM',sel:true},{label:'2047 — Executive Management',sel:false},
    {label:'2054 — IS North America',sel:false},{label:'L3_TIS_inspection',sel:false}]},
  {name:'Platform'},{name:'Impacted solution'},{name:'Project / Program / Tender'},
- {name:'Rex Source'},{name:'Macro Process'},{name:'Macro PBS'},{name:'Status'}
+ {name:'Rex Source'},{name:'Macro Process'},{name:'Macro PBS'},
+ {name:'Site',search:true,options:[
+   {label:'3027 — Charleroi BE',sel:false},{label:'2810 — Saint-Ouen FR',sel:false},
+   {label:'4021 — Bangalore IN',sel:false},{label:'1190 — Hornell US',sel:false}]},
+ {name:'REX Recording date',dateRange:true},
+ {name:'Status'}
 ];
 const RX_TITLE='Continue Hardware-in-the-Loop (HwiL) testing to ensure the HW and SW work in the target environment';
 const RX_TAKE=['Continue HwiL testing to ensure the HW and SW work in the target environment','Share this HwiL testing practice as a lesson learned for other programs'];
@@ -973,7 +975,12 @@ const REX_RESULTS=[
 ];
 function rxSection(s){
   let body='<div class="rx-sbody">';
-  if(s.options){
+  if(s.dateRange){
+    body+=`<div class="rx-daterange">
+      <label class="rx-dfield"><span>From</span><input type="date"></label>
+      <label class="rx-dfield"><span>To</span><input type="date"></label>
+    </div>`;
+  }else if(s.options){
     if(s.search)body+=`<div class="rx-fsearch">${RX_ICONS.search}<input placeholder="Search"></div><button class="rx-clear">Clear</button>`;
     s.options.forEach(o=>body+=`<div class="rx-opt${o.sel?' sel':''}"><span class="rx-box">${RX_ICONS.check}</span><span class="t">${o.label}</span></div>`);
   }else body+='<p class="rx-optempty">No options in this demo section.</p>';
@@ -990,13 +997,11 @@ function rxFilters(){
     <div class="rx-ffoot"><button class="btn-ghost" id="rx-clearall">Clear all filters</button></div>`;
 }
 function rxScoreLvl(s){return s>=90?'high':s>=75?'med':'low';}
-function rxScore(s){if(s==null)return '';
-  return `<span class="rx-score ${rxScoreLvl(s)}" title="Quality score — how reliable this REX is judged to be"><span class="rx-sdot"></span>${s}<span class="rx-sunit">%</span></span>`;}
-function rxBadges(r){return `<span class="rx-badge ${r.type}"><span class="dot"></span>${r.type==='success'?'Success story':'Issue'}</span>`+(r.cash?`<span class="rx-badge cash">${RX_ICONS.coin}Cash impact</span>`:'');}
 function rxCashBadge(r){return r.cash?`<span class="rx-badge cash">${RX_ICONS.coin}Cash impact</span>`:'';}
 function rxFoot(id){return `<div class="rx-cfoot"><button class="rx-detail" data-detail="${id}">See details ${RX_ICONS.arrow}</button><div class="rx-footsp"></div><div class="rx-footdiv"></div><button class="rx-iconbtn" aria-label="Relevant">${RX_ICONS.up}</button><button class="rx-iconbtn" aria-label="Not relevant">${RX_ICONS.down}</button></div>`;}
-function rxCompact(r){return `<article class="rx-card" data-row="${r.id}"><div class="rx-chead"><div class="rx-idrow"><span class="rx-id">REX · ${r.id}</span>${rxCashBadge(r)}<div class="rx-footsp"></div>${rxQual(r.score)}</div><h4 class="rx-ctitle">${r.title}</h4></div><div class="rx-cbody"></div>${rxFoot(r.id)}</article>`;}
-function rxFull(r){const items=r.take.map(t=>`<li>${t}</li>`).join('');return `<article class="rx-card" data-row="${r.id}"><div class="rx-chead"><div class="rx-idrow"><span class="rx-id">REX · ${r.id}</span>${rxCashBadge(r)}<div class="rx-footsp"></div>${rxQual(r.score)}</div><h4 class="rx-ctitle">${r.title}</h4></div><div class="rx-cbody"><p class="rx-eyebrow">Takeaway</p><ul class="rx-take">${items}</ul></div>${rxFoot(r.id)}</article>`;}
+function rxCardHead(r){return `<div class="rx-idrow"><span class="rx-id">REX · ${r.id}</span><div class="rx-footsp"></div>${rxQual(r.score)}</div><div class="rx-statusrow">${rxStatusPill(r.status||'stored')}${rxCashBadge(r)}</div><h4 class="rx-ctitle">${r.title}</h4>`;}
+function rxCompact(r){return `<article class="rx-card" data-row="${r.id}"><div class="rx-chead">${rxCardHead(r)}</div><div class="rx-cbody"></div>${rxFoot(r.id)}</article>`;}
+function rxFull(r){const items=r.take.map(t=>`<li>${t}</li>`).join('');return `<article class="rx-card" data-row="${r.id}"><div class="rx-chead">${rxCardHead(r)}</div><div class="rx-cbody"><p class="rx-eyebrow">Takeaway</p><ul class="rx-take">${items}</ul></div>${rxFoot(r.id)}</article>`;}
 const RX_PROBLEM=[
  ['What','Continue performing Hardware-in-the-Loop (HwiL) testing to verify hardware and software operate correctly in the target environment, as a best practice to replicate on other programs.'],
  ['Why','To ensure HW and SW are working in the target environment.'],
@@ -1056,7 +1061,10 @@ function rxCloseChat(){const d=$('#rx-chat-drawer');if(!d)return;d.classList.rem
 function rxDetailBody(r){
   const problem=RX_PROBLEM.map(([k,v])=>`<div class="rx-kv-row"><dt>${k}</dt><dd>${v}</dd></div>`).join('');
   const info=RX_INFO.map(([k,v])=>`<div class="rx-info-row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
-  return `<div class="rx-dbadges">${rxStatusPill(r.status||'stored')}${rxBadges(r)}${rxScore(r.score)}</div>
+  return `<div class="rx-dtop">
+      <div class="rx-dtags">${rxStatusPill(r.status||'stored')}${rxCashBadge(r)}</div>
+      ${rxQual(r.score)}
+    </div>
     <h2 class="rx-dtitle">${r.title}</h2>
     <div class="rx-dsection">
       <p class="rx-sechead"><span>Problem / Opportunity</span></p>
