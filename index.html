@@ -457,6 +457,8 @@ select.sel{border:1px solid var(--border-strong);background:var(--surface);color
 .rx-block{margin-bottom:var(--s-7)}
 .rx-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--s-4)}
 .rx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:var(--s-4)}
+.rx-showmore{display:flex;justify-content:center;margin-top:var(--s-5)}
+.rx-showmore-count{color:var(--text-muted);font-weight:500;margin-left:var(--s-2)}
 
 /* REX card — same elevation/hover language as catalogue cards */
 .rx-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:transform .12s,box-shadow .12s,border-color .12s}
@@ -689,6 +691,8 @@ if(!Array.isArray(state.favorites))state.favorites=['srm','translate','chatbot']
 if(state.theme)document.documentElement.setAttribute('data-theme',state.theme);
 let filter='all', searchTerm='';
 let rexView='home', rexTerm='', rexLayout='list';
+const REX_PAGE_SIZE=6;
+let rexVisibleCount=REX_PAGE_SIZE;
 
 const $=s=>document.querySelector(s);
 const iconSvg=(k,cls,sz=20)=>`<div class="ic ${cls}"><svg viewBox="0 0 24 24" width="${sz}" height="${sz}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[k]}</svg></div>`;
@@ -969,7 +973,23 @@ const REX_RESULTS=[
  {id:'2901',title:RX_TITLE,type:'success',cash:true,score:96,status:'accepted',take:RX_TAKE},
  {id:'2904',title:RX_TITLE,type:'issue',cash:true,score:91,status:'confirmed',take:RX_TAKE},
  {id:'2905',title:'Incoming inspection process not set up at project start',type:'issue',cash:false,score:83,status:'rejected',take:['Plan the incoming inspection process from project framing','Involve quality, warehouse and supply chain teams early']},
- {id:'2906',title:'Complete copper & fiber optic transmission scheme before design',type:'success',cash:false,score:68,status:'capitalized',take:['Build the end-to-end transmission diagram for all facilities','Validate required capacities before submitting to the general contractor']}
+ {id:'2906',title:'Complete copper & fiber optic transmission scheme before design',type:'success',cash:false,score:68,status:'capitalized',take:['Build the end-to-end transmission diagram for all facilities','Validate required capacities before submitting to the general contractor']},
+ {id:'2907',title:'Cable routing validated against as-built drawings before pulling',type:'success',cash:false,score:92,status:'accepted',take:['Check routing against as-built drawings before pulling cable','Involve the site team in the validation loop']},
+ {id:'2908',title:'Interface matrix frozen too late with the civil works contractor',type:'issue',cash:true,score:79,status:'submitted',take:['Freeze the interface matrix before detailed design starts','Set a joint review with the civil works contractor early']},
+ {id:'2909',title:'Spare parts list agreed during tender, not after award',type:'success',cash:true,score:86,status:'capitalized',take:['Agree the spare parts list during the tender phase','Price the list before award to avoid renegotiation']},
+ {id:'2910',title:'Software release notes missing traceability to requirements',type:'issue',cash:false,score:71,status:'stored',take:['Link every release note back to its requirement','Automate the traceability check before delivery']},
+ {id:'2911',title:'Safety retrofit required after system baseline delivery',type:'issue',cash:true,score:88,status:'confirmed',take:['Run the safety impact review before baseline delivery, not after','Track retrofit cost separately for lessons-learned reporting']},
+ {id:'2912',title:'Signalling test bench reused across three programs',type:'success',cash:false,score:90,status:'accepted',take:['Design test benches for reuse across programs from the start','Document the bench configuration for future teams']},
+ {id:'2913',title:'Site acceptance test delayed due to missing power supply',type:'issue',cash:true,score:65,status:'rejected',take:['Confirm site power availability before scheduling the SAT','Add a power-readiness checkpoint to the test plan']},
+ {id:'2914',title:'Shared component library cut integration time by 30%',type:'success',cash:true,score:94,status:'capitalized',take:['Invest early in a shared component library across products','Track integration time savings to justify the investment']},
+ {id:'2915',title:'Change request backlog not reviewed on a weekly basis',type:'issue',cash:false,score:60,status:'draft',take:['Review the change request backlog weekly, not ad hoc','Assign a single owner for backlog triage']},
+ {id:'2916',title:'Early factory acceptance test with the customer avoided late redesign',type:'success',cash:false,score:89,status:'accepted',take:['Invite the customer to an early FAT, not just the final one','Capture feedback in a shared action log']},
+ {id:'2917',title:'Firmware update process lacked a rollback plan',type:'issue',cash:true,score:73,status:'confirmed',take:['Always define a rollback plan before a firmware update window','Test the rollback path, not just the update path']},
+ {id:'2918',title:'Reused test scripts across depots cut commissioning time',type:'success',cash:false,score:91,status:'accepted',take:['Centralize test scripts so depots can reuse them','Version the scripts so updates reach every depot']},
+ {id:'2919',title:'Vendor documentation delivered in the wrong format',type:'issue',cash:false,score:58,status:'stored',take:['Specify the documentation format in the purchase order','Check a sample deliverable before the full batch ships']},
+ {id:'2920',title:'Joint risk register with subcontractor caught a schedule slip early',type:'success',cash:true,score:87,status:'capitalized',take:['Keep a joint risk register with key subcontractors','Review it at every steering committee, not just at milestones']},
+ {id:'2921',title:'Depot layout change submitted without an updated safety case',type:'issue',cash:true,score:62,status:'rejected',take:['Update the safety case before submitting a layout change','Loop in the safety team at the design stage, not after']},
+ {id:'2922',title:'Standardized handover checklist reduced commissioning defects',type:'success',cash:false,score:93,status:'accepted',take:['Use a standardized handover checklist across projects','Track defects found after handover to keep improving it']}
 ];
 function rxSection(s){
   let body='<div class="rx-sbody">';
@@ -1193,12 +1213,12 @@ function rexResults(term){
       </div>
       <p class="rx-timestamp">Last update for RexM: April 16, 2026 at 23:59:45</p>
       <div class="rx-tabs">
-        <button class="rx-tab active">RexM Cards <span class="rx-tcount">16</span></button>
+        <button class="rx-tab active">RexM Cards <span class="rx-tcount">${REX_RESULTS.length}</span></button>
         <button class="rx-tab">8D REX Cards <span class="rx-tcount">122</span></button>
         <button class="rx-tab">Change Requests <span class="rx-tcount">53</span></button>
         ${rxViewToggle()}
       </div>
-      <div class="rx-block"><h3 class="rx-sectitle withlink"><span><span style="font-weight:700">16</span> relevant REX found</span>
+      <div class="rx-block"><h3 class="rx-sectitle withlink"><span><span style="font-weight:700">${REX_RESULTS.length}</span> relevant REX found</span>
           <span class="rx-toolsrow">
             <span class="rx-relink">How is relevance determined?</span>
             <span class="rx-sort" id="rx-sort">
@@ -1218,9 +1238,11 @@ function rexResults(term){
           <button class="btn-ghost" id="rx-selclear">Clear selection</button>
           <button class="btn-primary" id="rx-seldownload">${RX_ICONS.download}<span>Download selection</span></button>
         </div>
-        ${rexLayout==='list'
-          ? `<div class="rx-list">${rxListHead()}${REX_RESULTS.map(rxListRow).join('')}</div>`
-          : `<div class="rx-grid">${REX_RESULTS.map(rxFull).join('')}</div>`}</div>
+        ${(()=>{const shown=REX_RESULTS.slice(0,rexVisibleCount);return rexLayout==='list'
+          ? `<div class="rx-list">${rxListHead()}${shown.map(rxListRow).join('')}</div>`
+          : `<div class="rx-grid">${shown.map(rxFull).join('')}</div>`;})()}
+        ${rexVisibleCount<REX_RESULTS.length?`<div class="rx-showmore"><button class="btn-ghost" id="rx-showmore">Show more<span class="rx-showmore-count">${REX_RESULTS.length-rexVisibleCount} remaining</span></button></div>`:''}
+      </div>
     </div>
   </div>
   ${rxDrawerMarkup()}
@@ -1228,7 +1250,7 @@ function rexResults(term){
 }
 SCREENS.rex360=()=> '<div class="tool-rex">'+(rexView==='results'?rexResults(rexTerm):rexHome())+'</div>';
 SCREEN_INIT.rex360=()=>{
-  const submit=t=>{rexTerm=(t||'').trim()||'REX';rexView='results';renderTool('rex360');};
+  const submit=t=>{rexTerm=(t||'').trim()||'REX';rexView='results';rexVisibleCount=REX_PAGE_SIZE;renderTool('rex360');};
   // drawer bindings — shared by both states
   document.querySelectorAll('[data-detail]').forEach(b=>b.addEventListener('click',()=>rxOpenDetail(b.dataset.detail)));
   $('#rx-close').addEventListener('click',rxCloseDetail);
@@ -1267,6 +1289,7 @@ SCREEN_INIT.rex360=()=>{
     document.querySelectorAll('.rx-opt').forEach(o=>o.addEventListener('click',()=>o.classList.toggle('sel')));
     document.querySelectorAll('.rx-tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.rx-tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');}));
     document.querySelectorAll('#rx-viewtog button').forEach(b=>b.addEventListener('click',()=>{rexLayout=b.dataset.view;renderTool('rex360');}));
+    $('#rx-showmore')?.addEventListener('click',()=>{rexVisibleCount=Math.min(rexVisibleCount+REX_PAGE_SIZE,REX_RESULTS.length);renderTool('rex360');});
     const syncSel=()=>{
       const n=document.querySelectorAll('.rx-lrow.sel').length,bar=$('#rx-selbar');
       if(!bar)return;bar.style.display=n?'flex':'none';
