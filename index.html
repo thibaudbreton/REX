@@ -586,19 +586,37 @@ select.sel{border:1px solid var(--border-strong);background:var(--surface);color
 .rx-drawer{position:fixed;top:0;right:0;height:100vh;width:min(520px,100vw);background:var(--surface);border-left:1px solid var(--border);box-shadow:-24px 0 60px rgba(9,18,33,.22);transform:translateX(100%);transition:transform .26s cubic-bezier(.4,0,.2,1),width .26s;z-index:60;display:flex;flex-direction:column}
 .rx-drawer.open{transform:none}
 .rx-drawer.wide{width:min(920px,100vw)}
-.rx-drawer.rx-chatdrawer{width:min(880px,100vw)}
-.rx-newchat{margin-left:auto;padding:6px 12px}
-.rx-chatwrap{display:flex;flex:1;min-height:0}
-.rx-chist{width:230px;flex:none;border-right:1px solid var(--border);background:var(--surface-2);overflow-y:auto;padding:var(--s-2)}
+.rx-chatscreen{display:flex;height:calc(100vh - 130px);min-height:480px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden;transition:margin-right .26s cubic-bezier(.4,0,.2,1)}
+.tool-rex.rx-docked .rx-chatscreen{margin-right:calc(min(520px,100vw) - var(--s-6))}
+.tool-rex.rx-docked .rx-chist-col{display:none}
+.rx-chist-col{width:250px;flex:none;border-right:1px solid var(--border);background:var(--surface-2);display:flex;flex-direction:column;min-height:0}
+.rx-chist-top{padding:var(--s-3) var(--s-3) 0}
+.rx-newchat{width:100%;justify-content:center}
+.rx-chist{flex:1;overflow-y:auto;padding:var(--s-1) var(--s-2) var(--s-3)}
+.rx-chathead{display:flex;align-items:baseline;gap:var(--s-3);padding:var(--s-4) var(--s-6);border-bottom:1px solid var(--border);flex:none}
+.rx-chathead h2{margin:0;font-size:var(--ts-3);font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.rx-chathead small{margin-left:auto;font-size:var(--ts-1);color:var(--text-muted);white-space:nowrap}
+.rx-chatscreen .thread{padding:var(--s-6) max(var(--s-6),calc((100% - 820px)/2))}
+.rx-chatscreen .composer{margin:0 max(var(--s-6),calc((100% - 820px)/2)) var(--s-6);flex:none}
+.rx-chatempty{margin:auto;text-align:center;max-width:560px}
+.rx-chatempty .ic{width:48px;height:48px;border-radius:var(--r-lg);background:var(--green-100);color:var(--green-600);display:inline-grid;place-items:center;margin-bottom:var(--s-3)}
+.rx-chatempty .ic svg{width:22px;height:22px}
+.rx-chatempty h3{margin:0 0 var(--s-2);font-size:var(--ts-4);color:var(--text)}
+.rx-chatempty p{margin:0 0 var(--s-5);font-size:var(--ts-2);color:var(--text-muted);line-height:1.5}
+.rx-chatsugg{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-2)}
+.rx-chatsugg button{text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s-3);font-size:var(--ts-2);color:var(--text);cursor:pointer;line-height:1.4}
+.rx-chatsugg button:hover{border-color:var(--green-500);background:var(--green-100)}
+.rx-srcrow.on{border-color:var(--green-500);background:var(--green-100)}
+.crumb-sub{color:var(--text-muted);font-weight:500}
 .rx-chgroup{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin:var(--s-4) var(--s-2) var(--s-1)}
 .rx-chgroup:first-child{margin-top:var(--s-2)}
 .rx-chitem{display:block;width:100%;text-align:left;background:none;border:0;border-radius:var(--r-sm);padding:7px var(--s-2);font-size:var(--ts-2);color:var(--text);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rx-chitem:hover{background:var(--surface)}
 .rx-chitem.on{background:var(--surface);font-weight:600;box-shadow:var(--shadow)}
 .rx-chatmain{flex:1;min-width:0;display:flex;flex-direction:column}
-.rx-chatmain .thread{flex:1;overflow-y:auto;padding:20px 22px}
+.rx-chatmain .thread{flex:1;overflow-y:auto;min-height:0}
 .rx-chatmain .msg.a{max-width:94%}
-@media(max-width:720px){.rx-chist{display:none}}
+@media(max-width:860px){.rx-chist-col{display:none}.rx-chatsugg{grid-template-columns:1fr}}
 .rx-srcs{margin-top:var(--s-3);border-top:1px solid var(--border);padding-top:var(--s-3)}
 .rx-srchead{display:flex;align-items:center;gap:6px;margin:0 0 var(--s-2);font-size:var(--ts-1);font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted)}
 .rx-srclist{display:flex;flex-direction:column;gap:4px}
@@ -758,7 +776,7 @@ let state=load();
 if(!Array.isArray(state.favorites))state.favorites=['srm','translate','chatbot'];
 if(state.theme)document.documentElement.setAttribute('data-theme',state.theme);
 let filter='all', searchTerm='';
-let rexView='home', rexTerm='', rexLayout='list';
+let rexView='home', rexTerm='', rexLayout='list', rexChatReturn='home';
 const REX_PAGE_SIZE=6;
 let rexVisibleCount=REX_PAGE_SIZE;
 
@@ -850,7 +868,8 @@ function renderTool(id){
   $('#topbarLeft').innerHTML=`<div class="crumb">
     <button class="back" id="backBtn" aria-label="Back to all tools"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
     <div class="path"><b>${t.name}</b></div></div>`;
-  const backAction=(id==='rex360'&&rexView==='results')?()=>{rexView='home';renderTool('rex360');}:home;
+  const backAction=(id!=='rex360'||rexView==='home')?home:()=>{rexView=rexView==='chat'?rexChatReturn:'home';renderTool('rex360');};
+  if(id==='rex360'&&rexView==='chat')$('#topbarLeft .path').insertAdjacentHTML('beforeend','<span class="crumb-sub"> / Chat</span>');
   $('#backBtn').addEventListener('click',backAction);
   $('#topbarRight').innerHTML=pinBtn(id);
   const head=`<div class="tool-head">${iconSvg(t.icon,'t-'+t.cat,22)}
@@ -1026,7 +1045,6 @@ function rexHome(){
     </div>
   </div>
   ${rxDrawerMarkup()}
-  ${rxChatMarkup()}
   ${rxUpdatesDrawerMarkup()}`;
 }
 const RX_ICONS={
@@ -1144,25 +1162,23 @@ const RX_INFO=[
  ['Expert','-'],
  ['Capitalization Evidence','Activities forecast']
 ];
-function rxChatMarkup(){return `
-  <div class="rx-scrim" id="rx-chat-scrim"></div>
-  <aside class="rx-drawer rx-chatdrawer" id="rx-chat-drawer" aria-hidden="true" aria-label="Chat with the REX base">
-    <div class="rx-dhead">
-      <button class="rx-iconbtn" id="rx-chat-close" aria-label="Close chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
-      <span class="rx-did">Chat with the REX base</span>
-      <button class="btn-ghost rx-newchat" data-newchat>${RX_ICONS.plus}New chat</button>
-    </div>
-    <div class="rx-chatwrap">
+function rexChatScreen(){return `
+  <div class="rx-chatscreen" id="rx-chatscreen">
+    <aside class="rx-chist-col">
+      <div class="rx-chist-top"><button class="btn-ghost rx-newchat" data-newchat>${RX_ICONS.plus}New chat</button></div>
       <nav class="rx-chist" id="rx-chist" aria-label="Chat history"></nav>
-      <div class="rx-chatmain">
-        <div class="thread" id="rx-chat-thread"></div>
-        <div class="composer" style="margin:0 22px 22px">
-          <textarea id="rx-chat-input" rows="1" placeholder="Ask about REX…"></textarea>
-          <button class="send" id="rx-chat-send" aria-label="Send"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg></button>
-        </div>
+    </aside>
+    <section class="rx-chatmain">
+      <div class="rx-chathead"><h2 id="rx-chattitle">New chat</h2><small>Sources: RexM · last update April 16, 2026</small></div>
+      <div class="thread" id="rx-chat-thread"></div>
+      <div class="composer">
+        <textarea id="rx-chat-input" rows="1" placeholder="Ask about REX…"></textarea>
+        <button class="send" id="rx-chat-send" aria-label="Send"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg></button>
       </div>
-    </div>
-  </aside>`;}
+    </section>
+  </div>
+  ${rxDrawerMarkup()}`;}
+const RX_CHAT_SUGGEST=['What are the most common causes of SAT delays?','Lessons learned on permit to work during installation','Which REX mention degraded mode issues?','How can we avoid late interface freezes with subcontractors?'];
 const RX_SRC_VISIBLE=5;
 const RX_CHAT_GROUPS=['Today','Last 7 days','Older'];
 let rxChats=[
@@ -1179,15 +1195,20 @@ let rxChats=[
    {u:'Why are site acceptance tests delayed?'},
    {a:'The most cited causes are a missing power supply, incomplete handover checklists and late documentation. Adding a site-readiness checkpoint before scheduling the SAT is the most common fix.',src:['2913','2922','2919','2918','2905']}]}
 ];
-let rxActiveChat=null, rxChatSeq=0;
+let rxActiveChat=null, rxChatSeq=0, rxOpenSrc=null;
 function rxSrcBlock(ids){
   const rows=ids.map((id,i)=>{const r=REX_RESULTS.find(x=>x.id===id);if(!r)return '';
-    return `<button class="rx-srcrow${i>=RX_SRC_VISIBLE?' hid':''}" data-src="${id}"><span class="id">REX · ${id}</span><span class="t">${r.title}</span>${rxStatusPill(r.status||'stored')}</button>`;}).join('');
+    return `<button class="rx-srcrow${i>=RX_SRC_VISIBLE?' hid':''}${id===rxOpenSrc?' on':''}" data-src="${id}"><span class="id">REX · ${id}</span><span class="t">${r.title}</span>${rxStatusPill(r.status||'stored')}</button>`;}).join('');
   const extra=ids.length-RX_SRC_VISIBLE;
-  return `<div class="rx-srcs"><p class="rx-srchead">${RX_ICONS.doc}Based on ${ids.length} REX</p><div class="rx-srclist">${rows}</div>${extra>0?`<button class="rx-srcmore" data-srcmore>+ ${extra} more sources</button>`:''}</div>`;
+  return `<div class="rx-srcs" data-srcs="${ids.join(',')}"><p class="rx-srchead">${RX_ICONS.doc}Based on ${ids.length} REX</p><div class="rx-srclist">${rows}</div>${extra>0?`<button class="rx-srcmore" data-srcmore>+ ${extra} more sources</button>`:''}</div>`;
 }
 function rxChatMsgs(c){
-  if(!c||!c.msgs.length)return '<div class="msg a">Hi — ask me anything about the REX base. I will answer with the REX I used as sources.</div>';
+  if(!c||!c.msgs.length)return `<div class="rx-chatempty">
+      <span class="ic">${RX_ICONS.chat}</span>
+      <h3>Ask the REX base</h3>
+      <p>Answers list the REX cards they are based on. Open any source to read it next to the conversation.</p>
+      <div class="rx-chatsugg">${RX_CHAT_SUGGEST.map(s=>`<button data-suggest="${esc(s)}">${esc(s)}</button>`).join('')}</div>
+    </div>`;
   return c.msgs.map(m=>m.u!=null?`<div class="msg u">${esc(m.u)}</div>`:`<div class="msg a">${m.a}${m.src?rxSrcBlock(m.src):''}</div>`).join('')
     +(c.pending?'<div class="msg a rx-typing" aria-label="Thinking"><span></span><span></span><span></span></div>':'');
 }
@@ -1195,8 +1216,10 @@ function rxChatRender(){
   const h=$('#rx-chist'),t=$('#rx-chat-thread');if(!h||!t)return;
   h.innerHTML=RX_CHAT_GROUPS.map(g=>{const items=rxChats.filter(c=>c.group===g);if(!items.length)return '';
     return `<p class="rx-chgroup">${g}</p>`+items.map(c=>`<button class="rx-chitem${c.id===rxActiveChat?' on':''}" data-chat="${c.id}" title="${esc(c.title)}">${esc(c.title)}</button>`).join('');}).join('');
-  t.innerHTML=rxChatMsgs(rxChats.find(c=>c.id===rxActiveChat));
+  const c=rxChats.find(x=>x.id===rxActiveChat);
+  t.innerHTML=rxChatMsgs(c);
   t.scrollTop=t.scrollHeight;
+  $('#rx-chattitle').textContent=c?c.title:'New chat';
 }
 function rxChatAnswer(q){
   const n=6+(q.length%7),start=q.length%REX_RESULTS.length;
@@ -1212,16 +1235,13 @@ function rxChatAsk(q){
   rxChatRender();
   setTimeout(()=>{c.pending=false;c.msgs.push(rxChatAnswer(q));rxChatRender();},600);
 }
-function rxOpenChat(seed){
-  const d=$('#rx-chat-drawer');if(!d)return;
-  rxCloseDetail();rxCloseUpdates();
+function rxGoChat(seed){
+  if(rexView!=='chat')rexChatReturn=rexView;
+  rexView='chat';rxOpenSrc=null;
   seed=(seed||'').trim();
   if(seed){const ex=rxChats.find(c=>c.msgs[0]&&c.msgs[0].u===seed);if(ex)rxActiveChat=ex.id;else{rxActiveChat=null;rxChatAsk(seed);}}
-  rxChatRender();
-  d.classList.add('open');d.setAttribute('aria-hidden','false');$('#rx-chat-scrim').classList.add('open');
-  setTimeout(()=>$('#rx-chat-input')?.focus(),150);
+  renderTool('rex360');window.scrollTo(0,0);
 }
-function rxCloseChat(){const d=$('#rx-chat-drawer');if(!d)return;d.classList.remove('open');d.setAttribute('aria-hidden','true');$('#rx-chat-scrim').classList.remove('open');}
 function rxDetailBody(r){
   const problem=RX_PROBLEM.map(([k,v])=>`<div class="rx-kv-row"><dt>${k}</dt><dd>${v}</dd></div>`).join('');
   const info=RX_INFO.map(([k,v])=>`<div class="rx-info-row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
@@ -1272,10 +1292,10 @@ function rxDrawerMarkup(){return `
     <div class="rx-dbody" id="rx-dbody"></div>
   </aside>`;}
 let rxDetailIdx=-1,rxList=[];
-function rxOpenDetail(id){
+function rxOpenDetail(id,within){
   const d=$('#rx-drawer');if(!d)return;
-  rxCloseChat();
-  let list=REX_RESULTS,idx=REX_RESULTS.findIndex(r=>r.id===id);
+  let list=within||REX_RESULTS,idx=list.findIndex(r=>r.id===id);
+  if(idx<0){list=REX_RESULTS;idx=list.findIndex(r=>r.id===id);}
   if(idx<0){const i2=REX_NEW.findIndex(r=>r.id===id);if(i2>-1){list=REX_NEW;idx=i2;}}
   if(idx<0){const i3=REX_LATEST.findIndex(r=>r.id===id);if(i3>-1){list=REX_LATEST;idx=i3;}}
   const r=idx>-1?list[idx]:REX_RESULTS[0];
@@ -1286,9 +1306,14 @@ function rxOpenDetail(id){
   $('#rx-prev').style.visibility=nav?'':'hidden';
   $('#rx-next').style.visibility=nav?'':'hidden';
   $('#rx-pos').textContent=nav?`${idx+1} / ${rxList.length}`:'';
-  d.classList.add('open');d.setAttribute('aria-hidden','false');$('#rx-scrim').classList.add('open');
+  d.classList.add('open');d.setAttribute('aria-hidden','false');
+  if(rexView==='chat'){
+    rxOpenSrc=r.id;$('.tool-rex').classList.add('rx-docked');
+    document.querySelectorAll('.rx-srcrow').forEach(b=>b.classList.toggle('on',b.dataset.src===r.id));
+  }else $('#rx-scrim').classList.add('open');
 }
-function rxCloseDetail(){const d=$('#rx-drawer');if(!d)return;d.classList.remove('open','wide');d.setAttribute('aria-hidden','true');$('#rx-scrim').classList.remove('open');const x=$('#rx-expand');if(x)x.querySelector('.lbl').textContent='Expand';}
+function rxCloseDetail(){const d=$('#rx-drawer');if(!d)return;d.classList.remove('open','wide');d.setAttribute('aria-hidden','true');$('#rx-scrim').classList.remove('open');const x=$('#rx-expand');if(x)x.querySelector('.lbl').textContent='Expand';
+  $('.tool-rex')?.classList.remove('rx-docked');rxOpenSrc=null;document.querySelectorAll('.rx-srcrow.on').forEach(b=>b.classList.remove('on'));}
 function rxUpdatesDrawerMarkup(){
   const updates=REX_UPDATES.map(u=>`
       <div class="rex-up">
@@ -1330,9 +1355,9 @@ function rxHelpTab(k){
   document.querySelectorAll('#rx-updates-drawer [data-htab]').forEach(b=>b.classList.toggle('on',b.dataset.htab===k));
   document.querySelectorAll('#rx-updates-drawer [data-hpane]').forEach(p=>p.classList.toggle('on',p.dataset.hpane===k));
 }
-function rxOpenUpdates(){const d=$('#rx-updates-drawer');if(!d)return;rxCloseChat();d.classList.add('open');d.setAttribute('aria-hidden','false');$('#rx-updates-scrim').classList.add('open');}
+function rxOpenUpdates(){const d=$('#rx-updates-drawer');if(!d)return;d.classList.add('open');d.setAttribute('aria-hidden','false');$('#rx-updates-scrim').classList.add('open');}
 function rxCloseUpdates(){const d=$('#rx-updates-drawer');if(!d)return;d.classList.remove('open');d.setAttribute('aria-hidden','true');$('#rx-updates-scrim').classList.remove('open');}
-function rxStep(delta){if(rxDetailIdx<0||!rxList.length)return;const n=(rxDetailIdx+delta+rxList.length)%rxList.length;rxOpenDetail(rxList[n].id);}
+function rxStep(delta){if(rxDetailIdx<0||!rxList.length)return;const n=(rxDetailIdx+delta+rxList.length)%rxList.length;rxOpenDetail(rxList[n].id,rxList);}
 function rxQual(s){if(s==null)return '';
   const lvl=rxScoreLvl(s),lbl=lvl==='high'?'High':lvl==='med'?'Medium':'Low';
   return `<span class="rx-qual ${lvl}" title="Quality score · ${s}%"><span class="rx-qbars"><i></i><i></i><i></i></span><span class="lbl">${lbl}</span></span>`;}
@@ -1427,10 +1452,9 @@ function rexResults(term){
       </div>
     </div>
   </div>
-  ${rxDrawerMarkup()}
-  ${rxChatMarkup()}`;
+  ${rxDrawerMarkup()}`;
 }
-SCREENS.rex360=()=> '<div class="tool-rex">'+(rexView==='results'?rexResults(rexTerm):rexHome())+'</div>';
+SCREENS.rex360=()=> '<div class="tool-rex">'+(rexView==='results'?rexResults(rexTerm):rexView==='chat'?rexChatScreen():rexHome())+'</div>';
 SCREEN_INIT.rex360=()=>{
   const submit=t=>{rexTerm=(t||'').trim()||'REX';rexView='results';rexVisibleCount=REX_PAGE_SIZE;renderTool('rex360');};
   // drawer bindings — shared by both states
@@ -1439,17 +1463,20 @@ SCREEN_INIT.rex360=()=>{
   $('#rx-prev').addEventListener('click',()=>rxStep(-1));
   $('#rx-next').addEventListener('click',()=>rxStep(1));
   $('#rx-expand').addEventListener('click',()=>{const w=$('#rx-drawer').classList.toggle('wide');$('#rx-expand').querySelector('.lbl').textContent=w?'Collapse':'Expand';});
-  // in-context chat — shared by both states
-  $('#rx-chat-close').addEventListener('click',rxCloseChat);
-  $('#rx-chat-scrim').addEventListener('click',rxCloseChat);
-  $('#rx-chat-send').addEventListener('click',()=>rxChatAsk($('#rx-chat-input').value));
-  $('#rx-chat-input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();rxChatAsk($('#rx-chat-input').value);}});
-  $('#rx-chat-drawer').addEventListener('click',e=>{
-    if(e.target.closest('[data-newchat]')){rxActiveChat=null;rxChatRender();$('#rx-chat-input').focus();return;}
-    const it=e.target.closest('[data-chat]');if(it){rxActiveChat=it.dataset.chat;rxChatRender();return;}
-    const s=e.target.closest('[data-src]');if(s){rxOpenDetail(s.dataset.src);return;}
-    const m=e.target.closest('[data-srcmore]');if(m){m.parentElement.querySelectorAll('.rx-srcrow.hid').forEach(x=>x.classList.remove('hid'));m.remove();}
-  });
+  if(rexView==='chat'){
+    const inp=$('#rx-chat-input');
+    $('#rx-chat-send').addEventListener('click',()=>rxChatAsk(inp.value));
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();rxChatAsk(inp.value);}});
+    $('#rx-chatscreen').addEventListener('click',e=>{
+      if(e.target.closest('[data-newchat]')){rxActiveChat=null;rxCloseDetail();rxChatRender();inp.focus();return;}
+      const it=e.target.closest('[data-chat]');if(it){rxActiveChat=it.dataset.chat;rxCloseDetail();rxChatRender();return;}
+      const sg=e.target.closest('[data-suggest]');if(sg){rxChatAsk(sg.dataset.suggest);return;}
+      const s=e.target.closest('[data-src]');if(s){const ids=s.closest('[data-srcs]').dataset.srcs.split(',');rxOpenDetail(s.dataset.src,ids.map(i=>REX_RESULTS.find(r=>r.id===i)).filter(Boolean));return;}
+      const m=e.target.closest('[data-srcmore]');if(m){m.parentElement.querySelectorAll('.rx-srcrow.hid').forEach(x=>x.classList.remove('hid'));m.remove();}
+    });
+    rxChatRender();inp.focus();
+    return;
+  }
   if(rexView==='home'){
     const q=$('#rex-q');
     $('#rex-go').addEventListener('click',()=>submit(q.value));
@@ -1461,7 +1488,7 @@ SCREEN_INIT.rex360=()=>{
     document.querySelectorAll('#rx-updates-drawer [data-htab]').forEach(b=>b.addEventListener('click',()=>rxHelpTab(b.dataset.htab)));
     $('#rex-seeall').addEventListener('click',()=>submit('added this month'));
     $('#rex-follow').addEventListener('click',()=>toast('You will be notified of Rex 360 updates'));
-    $('#rex-chat-btn').addEventListener('click',()=>rxOpenChat(q.value));
+    $('#rex-chat-btn').addEventListener('click',()=>rxGoChat(q.value));
     $('#rex-updates-open').addEventListener('click',rxOpenUpdates);
     $('#rx-updates-close').addEventListener('click',rxCloseUpdates);
     $('#rx-updates-scrim').addEventListener('click',rxCloseUpdates);
@@ -1469,7 +1496,7 @@ SCREEN_INIT.rex360=()=>{
     const q=$('#rex-q2');
     q.addEventListener('keydown',e=>{if(e.key==='Enter')submit(q.value)});
     $('#rex-go2').addEventListener('click',()=>submit(q.value));
-    $('#rex-chat-btn').addEventListener('click',()=>rxOpenChat(q.value));
+    $('#rex-chat-btn').addEventListener('click',()=>rxGoChat(q.value));
     const fpanel=$('#rx-filters'),tgl=()=>fpanel.classList.toggle('hidden');
     $('#rx-togglefilters').addEventListener('click',tgl);
     $('#rx-collapse').addEventListener('click',tgl);
