@@ -11,7 +11,7 @@
 :root{
   --font-ui:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
   --font-mono:'Roboto Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
-  --ts-1:12px; --ts-2:13px; --ts-3:15px; --ts-4:19px; --ts-5:26px;
+  --ts-1:11px; --ts-2:12px; --ts-3:14px; --ts-4:17px; --ts-5:23px;
   --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px; --s-7:48px;
   --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:14px; --r-pill:999px;
   --navy-900:#0d1f3c; --navy-700:#173259; --navy-500:#2a4a7a; --navy-300:#5a7db0;
@@ -1636,7 +1636,7 @@ SCREENS.dupes=()=>`<div class="qbar"><svg viewBox="0 0 24 24" fill="none" stroke
   ${dupCluster('Cluster B — Safety case summary',[['Safety case summary.pdf',100],['Safety case summary — draft.pdf',86]])}`;
 function dupCluster(title,files){
   return `<div class="result" style="cursor:default"><div class="r-top"><h4>${title}</h4><span class="match">${files.length} files</span></div>
-    ${files.map(([n,p])=>`<div style="display:flex;align-items:center;gap:12px;margin-top:10px"><span class="tag doc">${p}%</span><span style="font-size:13px">${n}</span></div>`).join('')}</div>`;
+    ${files.map(([n,p])=>`<div style="display:flex;align-items:center;gap:12px;margin-top:10px"><span class="tag doc">${p}%</span><span style="font-size:var(--ts-2)">${n}</span></div>`).join('')}</div>`;
 }
 
 /* --- Similar Documents (doc search) --- */
@@ -1688,7 +1688,7 @@ function dropSlot(label,file,tag){
 SCREENS.versions=()=>`
   <div class="panel" style="padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
     <div class="fi" style="width:38px;height:38px;border-radius:8px;background:var(--green-100);color:var(--green-600);display:grid;place-items:center"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
-    <b style="font-size:15px">Requirements Matrix — Signalling.xlsx</b>
+    <b style="font-size:var(--ts-3)">Requirements Matrix — Signalling.xlsx</b>
     <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
       <select class="sel"><option>v1 · 12 Feb</option><option>v2 · 03 Mar</option></select>
       <span style="color:var(--text-muted)">→</span>
