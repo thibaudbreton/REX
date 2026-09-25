@@ -586,10 +586,11 @@ select.sel{border:1px solid var(--border-strong);background:var(--surface);color
 .rx-drawer{position:fixed;top:0;right:0;height:100vh;width:min(520px,100vw);background:var(--surface);border-left:1px solid var(--border);box-shadow:-24px 0 60px rgba(9,18,33,.22);transform:translateX(100%);transition:transform .26s cubic-bezier(.4,0,.2,1),width .26s;z-index:60;display:flex;flex-direction:column}
 .rx-drawer.open{transform:none}
 .rx-drawer.wide{width:min(920px,100vw)}
-.rx-chatscreen{display:flex;height:calc(100vh - 130px);min-height:480px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden;transition:margin-right .26s cubic-bezier(.4,0,.2,1)}
-.tool-rex.rx-docked .rx-chatscreen{margin-right:calc(min(520px,100vw) - var(--s-6))}
+.content.content-flush{padding:0;max-width:none}
+.rx-chatscreen{display:flex;height:calc(100vh - 66px);min-height:420px;overflow:hidden;transition:margin-right .26s cubic-bezier(.4,0,.2,1)}
+.tool-rex.rx-docked .rx-chatscreen{margin-right:min(520px,100vw)}
 .tool-rex.rx-docked .rx-chist-col{display:none}
-.rx-chist-col{width:250px;flex:none;border-right:1px solid var(--border);background:var(--surface-2);display:flex;flex-direction:column;min-height:0}
+.rx-chist-col{width:260px;flex:none;border-right:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;min-height:0}
 .rx-chist-top{padding:var(--s-3) var(--s-3) 0}
 .rx-newchat{width:100%;justify-content:center}
 .rx-chist{flex:1;overflow-y:auto;padding:var(--s-1) var(--s-2) var(--s-3)}
@@ -788,6 +789,7 @@ const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&qu
 function router(){
   const h=location.hash;
   rexView='home';
+  $('#content').classList.remove('content-flush');
   document.getElementById('content').scrollIntoView?.({block:'start'});
   window.scrollTo(0,0);
   if(h.startsWith('#/tool/')){const id=h.slice(7); if(ALL[id]&&SCREENS[id]){renderTool(id);return;}}
@@ -874,6 +876,7 @@ function renderTool(id){
   $('#topbarRight').innerHTML=pinBtn(id);
   const head=`<div class="tool-head">${iconSvg(t.icon,'t-'+t.cat,22)}
     <div><h2>${t.name}</h2><p>${CAT_LABEL[t.cat]}</p></div></div>`;
+  $('#content').classList.toggle('content-flush',id==='rex360'&&rexView==='chat');
   $('#content').innerHTML=(SCREEN_BARE.has(id)?'':head)+SCREENS[id]();
   if(SCREEN_INIT[id])SCREEN_INIT[id]();
 }
