@@ -594,11 +594,11 @@ select.sel{border:1px solid var(--border-strong);background:var(--surface);color
 .rx-chist-top{padding:var(--s-3) var(--s-3) 0}
 .rx-newchat{width:100%;justify-content:center}
 .rx-chist{flex:1;overflow-y:auto;padding:var(--s-1) var(--s-2) var(--s-3)}
-.rx-chathead{display:flex;align-items:baseline;gap:var(--s-3);padding:var(--s-4) var(--s-6);border-bottom:1px solid var(--border);flex:none}
+.rx-chathead{display:flex;align-items:baseline;gap:var(--s-3);padding:var(--s-3) var(--s-6);border-bottom:1px solid var(--border);flex:none}
 .rx-chathead h2{margin:0;font-size:var(--ts-3);font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .rx-chathead small{margin-left:auto;font-size:var(--ts-1);color:var(--text-muted);white-space:nowrap}
-.rx-chatscreen .thread{padding:var(--s-6) max(var(--s-6),calc((100% - 820px)/2))}
-.rx-chatscreen .composer{margin:0 max(var(--s-6),calc((100% - 820px)/2)) var(--s-6);flex:none}
+.rx-chatscreen .thread{padding:var(--s-5) max(var(--s-6),calc((100% - 820px)/2))}
+.rx-chatscreen .composer{margin:0 max(var(--s-6),calc((100% - 820px)/2)) var(--s-4);flex:none;padding:var(--s-2)}
 .rx-chatempty{margin:auto;text-align:center;max-width:560px}
 .rx-chatempty .ic{width:48px;height:48px;border-radius:var(--r-lg);background:var(--green-100);color:var(--green-600);display:inline-grid;place-items:center;margin-bottom:var(--s-3)}
 .rx-chatempty .ic svg{width:22px;height:22px}
@@ -607,7 +607,6 @@ select.sel{border:1px solid var(--border-strong);background:var(--surface);color
 .rx-chatsugg{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-2)}
 .rx-chatsugg button{text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s-3);font-size:var(--ts-2);color:var(--text);cursor:pointer;line-height:1.4}
 .rx-chatsugg button:hover{border-color:var(--green-500);background:var(--green-100)}
-.rx-srcrow.on{border-color:var(--green-500);background:var(--green-100)}
 .crumb-sub{color:var(--text-muted);font-weight:500}
 .rx-chgroup{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin:var(--s-4) var(--s-2) var(--s-1)}
 .rx-chgroup:first-child{margin-top:var(--s-2)}
@@ -616,19 +615,43 @@ select.sel{border:1px solid var(--border-strong);background:var(--surface);color
 .rx-chitem.on{background:var(--surface);font-weight:600;box-shadow:var(--shadow)}
 .rx-chatmain{flex:1;min-width:0;display:flex;flex-direction:column}
 .rx-chatmain .thread{flex:1;overflow-y:auto;min-height:0}
+.rx-chatmain .thread{position:relative}
 .rx-chatmain .msg.a{max-width:94%}
+.rx-chatmain .msg.rx-ans{max-width:100%;width:100%}
 @media(max-width:860px){.rx-chist-col{display:none}.rx-chatsugg{grid-template-columns:1fr}}
-.rx-srcs{margin-top:var(--s-3);border-top:1px solid var(--border);padding-top:var(--s-3)}
-.rx-srchead{display:flex;align-items:center;gap:6px;margin:0 0 var(--s-2);font-size:var(--ts-1);font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted)}
-.rx-srclist{display:flex;flex-direction:column;gap:4px}
-.rx-srcrow{display:flex;align-items:center;gap:var(--s-2);width:100%;text-align:left;background:var(--surface-2);border:1px solid transparent;border-radius:var(--r-sm);padding:6px var(--s-2);cursor:pointer}
-.rx-srcrow:hover{border-color:var(--green-500);background:var(--green-100)}
-.rx-srcrow.hid{display:none}
-.rx-srcrow .id{font-family:var(--font-mono);font-size:var(--ts-1);color:var(--text-muted);flex:none}
-.rx-srcrow .t{flex:1;min-width:0;font-size:var(--ts-2);font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rx-srcrow .rx-spill{font-size:10px;padding:2px 8px;flex:none}
-.rx-srcmore{margin-top:6px;background:none;border:0;padding:4px 2px;font-size:var(--ts-1);font-weight:600;color:var(--green-600);cursor:pointer}
-.rx-srcmore:hover{text-decoration:underline}
+/* Long answers: compact one-line source strip + inline numbered citations */
+.rx-srcstrip{display:flex;align-items:center;gap:var(--s-2);margin:0 0 var(--s-3);padding-bottom:var(--s-3);border-bottom:1px solid var(--border)}
+.rx-srcstrip .lbl{display:inline-flex;align-items:center;gap:5px;flex:none;font-size:var(--ts-1);font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted)}
+.rx-srcchips{display:flex;gap:6px;flex:1;min-width:0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
+.rx-srcchip{display:inline-flex;align-items:center;gap:6px;flex:none;max-width:210px;background:var(--surface-2);border:1px solid transparent;border-radius:var(--r-pill);padding:3px 10px 3px 3px;font-size:var(--ts-1);color:var(--text);cursor:pointer}
+.rx-srcchip .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rx-srcchip:hover,.rx-srcchip.on{border-color:var(--green-500);background:var(--green-100)}
+.rx-srcall{flex:none;background:none;border:0;padding:4px 2px;font-size:var(--ts-1);font-weight:600;color:var(--green-600);cursor:pointer;white-space:nowrap}
+.rx-srcall:hover{text-decoration:underline}
+.rx-citen{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:var(--green-100);color:var(--green-600);font-family:var(--font-mono);font-size:10px;font-weight:700;flex:none;line-height:1}
+.rx-cite{display:inline-grid;place-items:center;min-width:17px;height:17px;padding:0 4px;margin:0 1px;border:0;border-radius:5px;background:var(--green-100);color:var(--green-600);font-family:var(--font-mono);font-size:10px;font-weight:700;line-height:1;vertical-align:2px;cursor:pointer}
+.rx-cite:hover,.rx-cite.on,.rx-srcchip.on .rx-citen{background:var(--green-600);color:#fff}
+.rx-anstext{line-height:1.6}
+.rx-anstext p{margin:0 0 var(--s-3)}
+.rx-anstext h4{margin:var(--s-4) 0 var(--s-2);font-size:var(--ts-3);font-weight:700;color:var(--text)}
+.rx-anstext ul{margin:0 0 var(--s-3);padding-left:var(--s-5)}
+.rx-anstext li{margin-bottom:var(--s-2)}
+.rx-anstext>:last-child{margin-bottom:0}
+/* Sources list in the side panel */
+.rx-dback{display:inline-flex;align-items:center;gap:4px;background:none;border:0;padding:4px 6px;border-radius:var(--r-sm);font-size:var(--ts-2);font-weight:600;color:var(--green-600);cursor:pointer}
+.rx-dback[hidden]{display:none}
+.rx-dback:hover{background:var(--surface-2)}
+.rx-dback svg{width:14px;height:14px}
+.rx-srcpanel-sub{margin:0 0 var(--s-4);font-size:var(--ts-2);color:var(--text-muted)}
+.rx-srcpanel{display:flex;flex-direction:column;gap:var(--s-2)}
+.rx-srcitem{display:flex;align-items:flex-start;gap:var(--s-3);width:100%;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s-3) var(--s-4);cursor:pointer;color:var(--text-muted)}
+.rx-srcitem:hover{border-color:var(--green-500)}
+.rx-srcitem .rx-citen{margin-top:2px}
+.rx-srcitem .b{flex:1;min-width:0}
+.rx-srcitem b{display:block;font-size:var(--ts-2);color:var(--text);line-height:1.4;margin-bottom:6px}
+.rx-srcitem .m{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}
+.rx-srcitem .rx-spill{font-size:10px;padding:2px 8px}
+.rx-srcitem>svg{width:14px;height:14px;flex:none;margin-top:3px}
 .rx-typing{display:inline-flex;gap:4px;align-items:center}
 .rx-typing span{width:6px;height:6px;border-radius:50%;background:var(--text-muted);animation:rxdot 1s infinite ease-in-out}
 .rx-typing span:nth-child(2){animation-delay:.15s}
@@ -1182,28 +1205,60 @@ function rexChatScreen(){return `
   </div>
   ${rxDrawerMarkup()}`;}
 const RX_CHAT_SUGGEST=['What are the most common causes of SAT delays?','Lessons learned on permit to work during installation','Which REX mention degraded mode issues?','How can we avoid late interface freezes with subcontractors?'];
-const RX_SRC_VISIBLE=5;
 const RX_CHAT_GROUPS=['Today','Last 7 days','Older'];
 let rxChats=[
  {id:'c1',group:'Today',title:'HwiL testing lessons on signalling programs',msgs:[
    {u:'What have we learned about HwiL testing on signalling programs?'},
-   {a:'Across the base, Hardware-in-the-Loop testing on the target environment is consistently reported as a success factor: it surfaces timing and interface issues that bench simulation misses. Teams recommend planning HwiL slots from the start of the test campaign and reusing test benches across programs.',src:['2901','2904','2912','2916','2918','2922','2907','2910']}]},
+   {a:`<p>Across the base, Hardware-in-the-Loop (HwiL) testing in the target environment is one of the most consistently reported success factors on signalling programs [1][2]. Teams describe it as the step that surfaces timing and interface issues that bench simulation misses, well before commissioning [1][5].</p>
+<h4>What worked</h4>
+<ul><li><b>Planning HwiL slots from the start of the test campaign</b>, rather than squeezing them in after integration, gave teams time to fix defects before site tests [1][4].</li>
+<li><b>Reusing test benches across programs</b> cut set-up time and made results comparable between projects [3].</li>
+<li><b>Running an early factory acceptance test with the customer</b> on the HwiL bench avoided a late redesign on one urban program [4].</li>
+<li><b>Centralizing and versioning test scripts</b> let depots reuse them and kept updates in sync across sites [5].</li></ul>
+<h4>What went wrong when it was skipped</h4>
+<ul><li>Where HwiL was reduced to protect the schedule, interface defects were found during commissioning, with a direct cost impact [2].</li>
+<li>Release notes without traceability to requirements made it hard to know which HwiL results were still valid after a software update [8].</li>
+<li>Routing and installation checks done too late meant some HwiL configurations no longer matched the as-built site [7].</li></ul>
+<h4>Recommendations</h4>
+<p>Book HwiL capacity at project framing, involve quality and integration teams up front, and close HwiL findings through a standardized handover checklist before site acceptance [6]. Keep the bench configuration documented so the next program can reuse it without starting from scratch [3].</p>`,src:['2901','2904','2912','2916','2918','2922','2907','2910']}]},
  {id:'c2',group:'Last 7 days',title:'Interface issues with civil works contractors',msgs:[
    {u:'Which REX mention interface issues with civil works contractors?'},
-   {a:'Several REX point to interface matrices frozen too late and to missing joint reviews. The recurring recommendation is to freeze the interface matrix before detailed design and to hold early joint reviews with the contractor.',src:['2908','2905','2913','2920','2921','2911']}]},
+   {a:`<p>Interface issues with civil works contractors come up repeatedly, and mostly as a timing problem rather than a technical one [1][5].</p>
+<h4>Recurring causes</h4>
+<ul><li>The interface matrix was frozen too late, after detailed design had started, which forced rework on both sides [1].</li>
+<li>Incoming inspection was not set up at project start, so non-conformities on delivered equipment surfaced late [2].</li>
+<li>Site readiness (power, access, technical rooms) was assumed rather than checked, which delayed tests [3].</li>
+<li>Layout changes were submitted without an updated safety case [5].</li></ul>
+<h4>What helped</h4>
+<p>Keeping a joint risk register with the subcontractor and reviewing it at every steering committee caught a schedule slip early [4]. Running the safety impact review before baseline delivery avoided a costly retrofit on another program [6].</p>`,src:['2908','2905','2913','2920','2921','2911']}]},
  {id:'c3',group:'Last 7 days',title:'Tender assumptions that led to cost overruns',msgs:[
    {u:'Tender assumptions that led to cost overruns'},
-   {a:'The main patterns are spare parts and service scopes agreed after award, and unpriced assumptions on site readiness. Agreeing these lists during the tender and pricing them before award reduces renegotiation.',src:['2909','2913','2919','2915','2914','2906','2917']}]},
+   {a:`<p>Cost overruns traced back to the tender phase usually come from scope that stayed implicit in the offer [1][3].</p>
+<h4>Main patterns</h4>
+<ul><li>Spare parts lists agreed after award instead of during the tender, leading to renegotiation [1].</li>
+<li>Unpriced assumptions on site readiness, such as power supply availability for tests [2].</li>
+<li>Documentation format not specified in the purchase order, causing rework [3].</li>
+<li>No weekly review of the change request backlog, so scope creep went unpriced [4].</li></ul>
+<h4>Good practices</h4>
+<p>Pricing the spare parts list before award, relying on a shared component library to secure estimates [5], and building the full transmission scheme before submitting to the general contractor [6] all reduced exposure. Firmware update risks should also be listed as an assumption, with a rollback plan [7].</p>`,src:['2909','2913','2919','2915','2914','2906','2917']}]},
  {id:'c4',group:'Older',title:'SAT delays and site readiness',msgs:[
    {u:'Why are site acceptance tests delayed?'},
-   {a:'The most cited causes are a missing power supply, incomplete handover checklists and late documentation. Adding a site-readiness checkpoint before scheduling the SAT is the most common fix.',src:['2913','2922','2919','2918','2905']}]}
+   {a:`<p>SAT delays are mostly caused by site readiness and documentation, not by the system under test [1][3].</p>
+<ul><li>A missing power supply on the day of the test is the single most cited cause [1].</li>
+<li>Incomplete handover checklists leave open points that block the SAT [2].</li>
+<li>Late or wrongly formatted vendor documentation delays the approval of the test procedure [3].</li></ul>
+<p>Adding a site-readiness checkpoint to the test plan and reusing validated test scripts [4] are the most common fixes. Setting up incoming inspection from project start also removes a frequent source of late surprises [5].</p>`,src:['2913','2922','2919','2918','2905']}]}
 ];
-let rxActiveChat=null, rxChatSeq=0, rxOpenSrc=null;
-function rxSrcBlock(ids){
-  const rows=ids.map((id,i)=>{const r=REX_RESULTS.find(x=>x.id===id);if(!r)return '';
-    return `<button class="rx-srcrow${i>=RX_SRC_VISIBLE?' hid':''}${id===rxOpenSrc?' on':''}" data-src="${id}"><span class="id">REX · ${id}</span><span class="t">${r.title}</span>${rxStatusPill(r.status||'stored')}</button>`;}).join('');
-  const extra=ids.length-RX_SRC_VISIBLE;
-  return `<div class="rx-srcs" data-srcs="${ids.join(',')}"><p class="rx-srchead">${RX_ICONS.doc}Based on ${ids.length} REX</p><div class="rx-srclist">${rows}</div>${extra>0?`<button class="rx-srcmore" data-srcmore>+ ${extra} more sources</button>`:''}</div>`;
+let rxActiveChat=null, rxChatSeq=0, rxOpenSrc=null, rxSrcPanel=null;
+const rxSrcList=ids=>ids.map(i=>REX_RESULTS.find(r=>r.id===i)).filter(Boolean);
+function rxSrcStrip(ids){
+  const chips=ids.map((id,i)=>{const r=REX_RESULTS.find(x=>x.id===id);if(!r)return '';
+    return `<button class="rx-srcchip${id===rxOpenSrc?' on':''}" data-src="${id}" title="REX · ${id} — ${esc(r.title)}"><span class="rx-citen">${i+1}</span><span class="t">${r.title}</span></button>`;}).join('');
+  return `<div class="rx-srcstrip"><span class="lbl">${RX_ICONS.doc}${ids.length} sources</span><div class="rx-srcchips">${chips}</div><button class="rx-srcall" data-allsrc>View all</button></div>`;
+}
+function rxCiteify(html,ids){
+  return html.replace(/\[(\d+)\]/g,(m,n)=>{const id=ids[n-1];if(!id)return m;
+    return `<button class="rx-cite${id===rxOpenSrc?' on':''}" data-src="${id}" title="REX · ${id}">${n}</button>`;});
 }
 function rxChatMsgs(c){
   if(!c||!c.msgs.length)return `<div class="rx-chatempty">
@@ -1212,7 +1267,9 @@ function rxChatMsgs(c){
       <p>Answers list the REX cards they are based on. Open any source to read it next to the conversation.</p>
       <div class="rx-chatsugg">${RX_CHAT_SUGGEST.map(s=>`<button data-suggest="${esc(s)}">${esc(s)}</button>`).join('')}</div>
     </div>`;
-  return c.msgs.map(m=>m.u!=null?`<div class="msg u">${esc(m.u)}</div>`:`<div class="msg a">${m.a}${m.src?rxSrcBlock(m.src):''}</div>`).join('')
+  return c.msgs.map(m=>m.u!=null?`<div class="msg u">${esc(m.u)}</div>`
+    :m.src?`<div class="msg a rx-ans" data-srcs="${m.src.join(',')}">${rxSrcStrip(m.src)}<div class="rx-anstext">${rxCiteify(m.a,m.src)}</div></div>`
+    :`<div class="msg a">${m.a}</div>`).join('')
     +(c.pending?'<div class="msg a rx-typing" aria-label="Thinking"><span></span><span></span><span></span></div>':'');
 }
 function rxChatRender(){
@@ -1221,13 +1278,22 @@ function rxChatRender(){
     return `<p class="rx-chgroup">${g}</p>`+items.map(c=>`<button class="rx-chitem${c.id===rxActiveChat?' on':''}" data-chat="${c.id}" title="${esc(c.title)}">${esc(c.title)}</button>`).join('');}).join('');
   const c=rxChats.find(x=>x.id===rxActiveChat);
   t.innerHTML=rxChatMsgs(c);
-  t.scrollTop=t.scrollHeight;
+  const qs=t.querySelectorAll('.msg.u'),lastQ=qs[qs.length-1];
+  t.scrollTop=lastQ?lastQ.offsetTop-24:0;
   $('#rx-chattitle').textContent=c?c.title:'New chat';
 }
 function rxChatAnswer(q){
   const n=6+(q.length%7),start=q.length%REX_RESULTS.length;
   const src=Array.from({length:n},(_,i)=>REX_RESULTS[(start+i*3)%REX_RESULTS.length].id);
-  return {a:`Here is what the REX base says about “${esc(q)}”. The most relevant returns converge on three points: validate early in the target environment, formalize interfaces with partners before detailed design, and check site readiness before tests.`,src};
+  return {a:`<p>Here is what the REX base says about “${esc(q)}”. ${n} REX cards are relevant; they converge on three themes [1][2].</p>
+<h4>Validate early, in the target environment</h4>
+<p>Several programs found issues only once hardware and software ran together on site. Where teams tested early on representative benches, late redesigns were avoided [1][3]. Keeping test scripts and bench configurations under version control made this reusable across projects [4].</p>
+<h4>Formalize interfaces before detailed design</h4>
+<ul><li>Freeze interface matrices with partners and subcontractors before detailed design starts [2].</li>
+<li>Hold joint reviews at fixed milestones rather than when problems appear [5].</li>
+<li>Track interface-related risks in a register shared with the partner [6].</li></ul>
+<h4>Check site readiness before tests</h4>
+<p>Missing power, access or documentation are the most frequent causes of delayed tests [3][6]. A readiness checkpoint in the test plan, owned by one person, is the fix most often recommended.</p>`,src};
 }
 function rxChatAsk(q){
   q=(q||'').trim();if(!q)return;
@@ -1285,6 +1351,7 @@ function rxDrawerMarkup(){return `
   <aside class="rx-drawer" id="rx-drawer" aria-hidden="true" aria-label="REX detail">
     <div class="rx-dhead">
       <button class="rx-iconbtn" id="rx-close" aria-label="Close detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      <button class="rx-dback" id="rx-back" hidden>${RX_ICONS.back}All sources</button>
       <span class="rx-did" id="rx-did">REX ·</span>
       <span class="rx-pos" id="rx-pos"></span>
       <div class="rx-footsp"></div>
@@ -1312,11 +1379,25 @@ function rxOpenDetail(id,within){
   d.classList.add('open');d.setAttribute('aria-hidden','false');
   if(rexView==='chat'){
     rxOpenSrc=r.id;$('.tool-rex').classList.add('rx-docked');
-    document.querySelectorAll('.rx-srcrow').forEach(b=>b.classList.toggle('on',b.dataset.src===r.id));
+    document.querySelectorAll('#rx-chat-thread [data-src]').forEach(b=>b.classList.toggle('on',b.dataset.src===r.id));
   }else $('#rx-scrim').classList.add('open');
+  $('#rx-back').hidden=!(rexView==='chat'&&rxSrcPanel);
+}
+function rxOpenSources(ids){
+  const d=$('#rx-drawer');if(!d)return;
+  rxSrcPanel=ids;rxDetailIdx=-1;rxOpenSrc=null;
+  const items=ids.map((id,i)=>{const r=REX_RESULTS.find(x=>x.id===id);if(!r)return '';
+    return `<button class="rx-srcitem" data-srcitem="${id}"><span class="rx-citen">${i+1}</span><span class="b"><b>${r.title}</b><span class="m"><span class="rx-id">REX · ${id}</span>${rxStatusPill(r.status||'stored')}${rxQual(r.score)}</span></span>${RX_ICONS.arrow}</button>`;}).join('');
+  $('#rx-dbody').innerHTML=`<p class="rx-srcpanel-sub">This answer is based on ${ids.length} REX cards, numbered as cited in the text.</p><div class="rx-srcpanel">${items}</div>`;
+  $('#rx-dbody').scrollTop=0;
+  $('#rx-did').textContent='Sources';$('#rx-pos').textContent=`${ids.length} REX`;
+  $('#rx-prev').style.visibility='hidden';$('#rx-next').style.visibility='hidden';$('#rx-back').hidden=true;
+  document.querySelectorAll('#rx-chat-thread [data-src].on').forEach(b=>b.classList.remove('on'));
+  d.classList.add('open');d.setAttribute('aria-hidden','false');
+  $('.tool-rex').classList.add('rx-docked');
 }
 function rxCloseDetail(){const d=$('#rx-drawer');if(!d)return;d.classList.remove('open','wide');d.setAttribute('aria-hidden','true');$('#rx-scrim').classList.remove('open');const x=$('#rx-expand');if(x)x.querySelector('.lbl').textContent='Expand';
-  $('.tool-rex')?.classList.remove('rx-docked');rxOpenSrc=null;document.querySelectorAll('.rx-srcrow.on').forEach(b=>b.classList.remove('on'));}
+  $('.tool-rex')?.classList.remove('rx-docked');rxOpenSrc=null;rxSrcPanel=null;document.querySelectorAll('#rx-chat-thread [data-src].on').forEach(b=>b.classList.remove('on'));}
 function rxUpdatesDrawerMarkup(){
   const updates=REX_UPDATES.map(u=>`
       <div class="rex-up">
@@ -1474,9 +1555,13 @@ SCREEN_INIT.rex360=()=>{
       if(e.target.closest('[data-newchat]')){rxActiveChat=null;rxCloseDetail();rxChatRender();inp.focus();return;}
       const it=e.target.closest('[data-chat]');if(it){rxActiveChat=it.dataset.chat;rxCloseDetail();rxChatRender();return;}
       const sg=e.target.closest('[data-suggest]');if(sg){rxChatAsk(sg.dataset.suggest);return;}
-      const s=e.target.closest('[data-src]');if(s){const ids=s.closest('[data-srcs]').dataset.srcs.split(',');rxOpenDetail(s.dataset.src,ids.map(i=>REX_RESULTS.find(r=>r.id===i)).filter(Boolean));return;}
-      const m=e.target.closest('[data-srcmore]');if(m){m.parentElement.querySelectorAll('.rx-srcrow.hid').forEach(x=>x.classList.remove('hid'));m.remove();}
+      const ans=e.target.closest('[data-srcs]');if(!ans)return;
+      const ids=ans.dataset.srcs.split(',');
+      const s=e.target.closest('[data-src]');if(s){rxSrcPanel=ids;rxOpenDetail(s.dataset.src,rxSrcList(ids));return;}
+      if(e.target.closest('[data-allsrc]'))rxOpenSources(ids);
     });
+    $('#rx-dbody').addEventListener('click',e=>{const it=e.target.closest('[data-srcitem]');if(it)rxOpenDetail(it.dataset.srcitem,rxSrcList(rxSrcPanel));});
+    $('#rx-back').addEventListener('click',()=>rxOpenSources(rxSrcPanel));
     rxChatRender();inp.focus();
     return;
   }
